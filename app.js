@@ -11,12 +11,21 @@ User		  = require("./models/user"),
 LocalStrategy = require("passport-local"),
 seedDB		  = require("./seeds"); 
 
+
+
 //requiring routes
 const commentRoutes = require("./routes/comments"),
 	  campgroundRoutes = require("./routes/campgrounds"),
 	  indexRoutes = require("./routes/index")
 
-mongoose.connect("mongodb://localhost/yelp_camp_v6",  {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://YelpCamp:DK2zEQxQX7vSzGNj@cluster0-pvtbt.mongodb.net/test?retryWrites=true&w=majority",  { 
+	useNewUrlParser: true, 
+	useUnifiedTopology: true
+}).then(()=>{
+	console.log("Connected to DB");
+}).catch(err =>{
+	console.log("ERROR:", err.message);
+});
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine","ejs");
 app.use(express.static(__dirname +"/public"));
@@ -51,7 +60,7 @@ app.use("/campgrounds",campgroundRoutes);
 app.use("/campgrounds/:id/comments",commentRoutes);
 
 
-
+//process.env.PORT
 app.listen(process.env.PORT, function(){
 	console.log("YelpCamp Server has started!");
 })
